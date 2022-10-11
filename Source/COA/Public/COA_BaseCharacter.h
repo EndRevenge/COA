@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "COA_BaseCharacter.generated.h"
 
 UCLASS()
@@ -14,6 +15,22 @@ class COA_API ACOA_BaseCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ACOA_BaseCharacter();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "COA")
+		bool bDead;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "COA")
+		float Health;
+
+	UPROPERTY(EditAnywhere, Category = "COA")
+		float MaxHealth;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "COA")
+		float HealingRate;
+
+	UPROPERTY(EditAnywhere, Category = "COA")
+		float WalkSpeed;
+
 
 protected:
 	// Called when the game starts or when spawned
