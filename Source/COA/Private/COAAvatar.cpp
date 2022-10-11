@@ -28,6 +28,25 @@ void ACOAAvatar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ACOAAvatar::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ACOAAvatar::MoveRight);
+
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+
+	PlayerInputComponent->BindAction("Run", IE_Pressed, this, &ACOAAvatar::RunPressed);
+	PlayerInputComponent->BindAction("Run", IE_Released, this, &ACOAAvatar::RunReleased);
+
+
+}
+
+void ACOAAvatar::RunPressed()
+{
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+}
+
+
+void ACOAAvatar::RunReleased()
+{
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }
 
 void ACOAAvatar::MoveForward(float value)

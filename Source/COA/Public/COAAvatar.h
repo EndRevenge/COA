@@ -31,6 +31,7 @@ public:
 private:
 	void MoveForward(float value);
 	void MoveRight(float value);
-
+	void RunPressed();
+	void RunReleased();
 	
 };
