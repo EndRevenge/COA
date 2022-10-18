@@ -3,7 +3,15 @@
 
 #include "COAAvatar.h"
 
-ACOAAvatar::ACOAAvatar()
+ACOAAvatar::ACOAAvatar() :
+bRunning(),
+bStaminaDrained(),
+MaxStamina(100.0f),
+Stamina(),
+RunSpeed(0),
+StaminaGainRate(),
+StaminaDrainRate()
+
 {
 	mSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	mSpringArm ->SetupAttachment(RootComponent);

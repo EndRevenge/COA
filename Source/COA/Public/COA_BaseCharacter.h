@@ -31,8 +31,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = "COA")
 		float WalkSpeed;
 
-	UPROPERTY(EditAnywhere, Category = "COA")
-		float RunSpeed;
 
 protected:
 	// Called when the game starts or when spawned

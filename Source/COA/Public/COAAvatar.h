@@ -25,6 +25,29 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "COA")
 		USpringArmComponent* mSpringArm;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "COA")
+		float Stamina;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "COA")
+		float MaxStamina;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "COA")
+		float StaminaDrainRate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "COA")
+		float StaminaGainRate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "COA")
+		bool bStaminaDrained;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "COA")
+		bool bRunning;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "COA")
+		float RunSpeed;
+
+
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
