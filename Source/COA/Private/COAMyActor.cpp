@@ -11,6 +11,8 @@ ACOAMyActor::ACOAMyActor()
 	SetRootComponent(
 		CreateDefaultSubobject<USceneComponent>(TEXT("Root")));
 
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+
 }
 
 // Called when the game starts or when spawned

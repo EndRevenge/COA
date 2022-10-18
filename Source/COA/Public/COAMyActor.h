@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h" 
+#include "Camera/CameraComponent.h"
 #include "COAMyActor.generated.h"
 
 
@@ -15,6 +16,13 @@ class COA_API ACOAMyActor : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ACOAMyActor();
+
+	//This is the actor's hit points!
+	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category ="COA", DisplayName="Health")
+		int HitPoints;
+	
+	UPROPERTY()
+		UCameraComponent* Camera;
 
 protected:
 	// Called when the game starts or when spawned
