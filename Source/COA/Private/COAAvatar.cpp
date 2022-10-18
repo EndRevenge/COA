@@ -7,10 +7,10 @@ ACOAAvatar::ACOAAvatar() :
 bRunning(),
 bStaminaDrained(),
 MaxStamina(100.0f),
-Stamina(),
+Stamina(MaxStamina),
 RunSpeed(0),
-StaminaGainRate(),
-StaminaDrainRate()
+StaminaGainRate(1.0f),
+StaminaDrainRate(1.0f)
 
 {
 	mSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
@@ -46,6 +46,21 @@ void ACOAAvatar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 }
 
+void ACOAAvatar::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (GetCharacterMovement()->MovementMode == EMovementMode::MOVE_Walking)
+	{
+		//Stamina = FMath::Min(MaxStamina, Stamina - StaminaDrainRate * DeltaTime);
+	}
+
+		//Stamina = FMath::Min(MaxStamina, Stamina + StaminaGainRate * DeltaTime);
+		//Stamina= FMath::Min(MaxStamina, Stamina - StaminaDrainRate * DeltaTime);
+	
+
+}
+
 void ACOAAvatar::RunPressed()
 {
 	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
@@ -58,6 +73,14 @@ void ACOAAvatar::RunReleased()
 {
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 	bRunning = false;
+}
+
+void ACOAAvatar::UpdateMovementParams()
+{
+	if (bRunning)
+	{
+
+	}
 }
 
 void ACOAAvatar::MoveForward(float value)

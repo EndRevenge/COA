@@ -28,13 +28,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "COA")
 		float Stamina;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "COA")
+	UPROPERTY(EditAnywhere, Category = "COA")
 		float MaxStamina;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "COA")
+	UPROPERTY(EditAnywhere, Category = "COA")
 		float StaminaDrainRate;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "COA")
+	UPROPERTY(EditAnywhere, Category = "COA")
 		float StaminaGainRate;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "COA")
@@ -46,15 +46,22 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "COA")
 		float RunSpeed;
 
+	
+
 
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
 
 private:
 	void MoveForward(float value);
 	void MoveRight(float value);
 	void RunPressed();
 	void RunReleased();
+	void UpdateMovementParams();
 	
 };
