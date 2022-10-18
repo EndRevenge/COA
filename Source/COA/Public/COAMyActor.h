@@ -24,6 +24,19 @@ public:
 	UPROPERTY()
 		UCameraComponent* Camera;
 
+	UFUNCTION(BlueprintCallable, DisplayName="Increase My Counter")
+	bool  IncreaseCounter(int incAmount, UCameraComponent* CameraComp, float &HealthPercent);
+
+	UFUNCTION(BlueprintPure, DisplayName = "Health Percent")
+	float GetHealthPercent();
+
+	UFUNCTION(BlueprintNativeEvent)
+	float ModifyDamageBlueprint(float Damage);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	float ModifyDamageBlueprint2(float Damage);
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
