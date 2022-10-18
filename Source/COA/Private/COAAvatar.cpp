@@ -49,12 +49,15 @@ void ACOAAvatar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 void ACOAAvatar::RunPressed()
 {
 	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+	bRunning = true;
+
 }
 
 
 void ACOAAvatar::RunReleased()
 {
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+	bRunning = false;
 }
 
 void ACOAAvatar::MoveForward(float value)
