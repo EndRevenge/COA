@@ -63,7 +63,7 @@ void ACOAAvatar::MoveRight(float value)
 void ACOAAvatar::RunPressed()
 {
 	
-	if (!bStaminaDrained)
+	if (!bStaminaDrained && GetCharacterMovement()->IsMovingOnGround())
 	{
 		bRunning = true;
 	}
@@ -103,16 +103,21 @@ void ACOAAvatar::Tick(float DeltaTime)
 
 	if (!bRunning)
 	{
-		//Walking or Waiting
-		Stamina += DeltaTime * StaminaGainRate;
 
-		if (bStaminaDrained && Stamina >= MaxStamina)
-			bStaminaDrained = false;
+		if (GetCharacterMovement()->MovementMode == EMovementMode::MOVE_Walking)
+		{
+			//Walking or Waiting
+			Stamina += DeltaTime * StaminaGainRate;
+
+			if (bStaminaDrained && Stamina >= MaxStamina)
+				bStaminaDrained = false;
+		}
+		
 	}
 	else
 	{
 		//Running
-		if (!bStaminaDrained)
+		if (!bStaminaDrained && GetCharacterMovement()->MovementMode == EMovementMode::MOVE_Walking && !GetCharacterMovement()->GetLastUpdateVelocity().IsNearlyZero())
 		{
 			Stamina -= DeltaTime * StaminaDrainRate;
 			currentSpeed = RunSpeed;
@@ -129,13 +134,15 @@ void ACOAAvatar::Tick(float DeltaTime)
 
 	if (GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Yellow, FString::Printf(TEXT("IsDepleted: %d Stamina: %f"), bStaminaDrained, Stamina));
+		GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Yellow, FString::Printf(TEXT("Tired?: %d Stamina: %f"), bStaminaDrained, Stamina));
 	}
 
-	/*if (GetCharacterMovement()->MovementMode == EMovementMode::MOVE_Walking)
+	if (GetCharacterMovement()->MovementMode == EMovementMode::MOVE_Walking)
 	{
+		
+		//GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Yellow, FString::Printf(TEXT("Tired?: %d Stamina: %f"), 0, Stamina));
 		//Stamina = FMath::Min(MaxStamina, Stamina - StaminaDrainRate * DeltaTime);
-	} */
+	} 
 
 	//Stamina = FMath::Min(MaxStamina, Stamina + StaminaGainRate * DeltaTime);
 	//Stamina= FMath::Min(MaxStamina, Stamina - StaminaDrainRate * DeltaTime);
