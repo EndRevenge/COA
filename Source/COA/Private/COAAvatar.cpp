@@ -4,13 +4,11 @@
 #include "COAAvatar.h"
 
 ACOAAvatar::ACOAAvatar() :
-bRunning(),
-bStaminaDrained(),
 MaxStamina(100.0f),
 Stamina(MaxStamina),
 RunSpeed(0),
-StaminaGainRate(1.0f),
-StaminaDrainRate(1.0f)
+StaminaGainRate(8.0f),
+StaminaDrainRate(4.0f)
 
 {
 	mSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
@@ -46,43 +44,6 @@ void ACOAAvatar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 }
 
-void ACOAAvatar::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	if (GetCharacterMovement()->MovementMode == EMovementMode::MOVE_Walking)
-	{
-		//Stamina = FMath::Min(MaxStamina, Stamina - StaminaDrainRate * DeltaTime);
-	}
-
-		//Stamina = FMath::Min(MaxStamina, Stamina + StaminaGainRate * DeltaTime);
-		//Stamina= FMath::Min(MaxStamina, Stamina - StaminaDrainRate * DeltaTime);
-	
-
-}
-
-void ACOAAvatar::RunPressed()
-{
-	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
-	bRunning = true;
-
-}
-
-
-void ACOAAvatar::RunReleased()
-{
-	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
-	bRunning = false;
-}
-
-void ACOAAvatar::UpdateMovementParams()
-{
-	if (bRunning)
-	{
-
-	}
-}
-
 void ACOAAvatar::MoveForward(float value)
 {
 	FRotator Rotation = GetController()->GetControlRotation();
@@ -98,3 +59,89 @@ void ACOAAvatar::MoveRight(float value)
 	FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 	AddMovementInput(RightDirection, value);
 }
+
+void ACOAAvatar::RunPressed()
+{
+	
+	if (!bStaminaDrained)
+	{
+		bRunning = true;
+	}
+	//GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+	
+
+}
+
+
+void ACOAAvatar::RunReleased()
+{
+	//GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+	bRunning = false;
+}
+
+
+// Called when the game starts or when spawned
+void ACOAAvatar::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+/*void ACOAAvatar::UpdateMovementParams()
+{
+	if (bRunning)
+	{
+
+	}
+}*/
+
+void ACOAAvatar::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+
+	float currentSpeed = WalkSpeed;
+
+	if (!bRunning)
+	{
+		//Walking or Waiting
+		Stamina += DeltaTime * StaminaGainRate;
+
+		if (bStaminaDrained && Stamina >= MaxStamina)
+			bStaminaDrained = false;
+	}
+	else
+	{
+		//Running
+		if (!bStaminaDrained)
+		{
+			Stamina -= DeltaTime * StaminaDrainRate;
+			currentSpeed = RunSpeed;
+
+			if (Stamina <= 0.0f)
+				bStaminaDrained = true;
+		}
+	}
+
+	Stamina = FMath::Clamp(Stamina, 0.0f, MaxStamina);
+
+	//Set Player Speed
+	GetCharacterMovement()->MaxWalkSpeed = currentSpeed;
+
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Yellow, FString::Printf(TEXT("IsDepleted: %d Stamina: %f"), bStaminaDrained, Stamina));
+	}
+
+	/*if (GetCharacterMovement()->MovementMode == EMovementMode::MOVE_Walking)
+	{
+		//Stamina = FMath::Min(MaxStamina, Stamina - StaminaDrainRate * DeltaTime);
+	} */
+
+	//Stamina = FMath::Min(MaxStamina, Stamina + StaminaGainRate * DeltaTime);
+	//Stamina= FMath::Min(MaxStamina, Stamina - StaminaDrainRate * DeltaTime);
+
+
+}
+
+
+

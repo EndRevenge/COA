@@ -25,16 +25,21 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "COA")
 		USpringArmComponent* mSpringArm;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "COA")
+		float RunSpeed;
+
+
+	//STAMINA INTEGRATION
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "COA")
 		float Stamina;
 
-	UPROPERTY(EditAnywhere, Category = "COA")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "COA")
 		float MaxStamina;
 
-	UPROPERTY(EditAnywhere, Category = "COA")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "COA")
 		float StaminaDrainRate;
 
-	UPROPERTY(EditAnywhere, Category = "COA")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category = "COA")
 		float StaminaGainRate;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "COA")
@@ -43,19 +48,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "COA")
 		bool bRunning;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "COA")
-		float RunSpeed;
-
-	
-
-
-
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 
 private:
 	void MoveForward(float value);
