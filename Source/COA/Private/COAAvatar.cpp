@@ -7,8 +7,8 @@ ACOAAvatar::ACOAAvatar() :
 MaxStamina(100.0f),
 Stamina(MaxStamina),
 RunSpeed(0),
-StaminaGainRate(8.0f),
-StaminaDrainRate(4.0f)
+StaminaGainRate(16.0f),
+StaminaDrainRate(8.0f)
 
 {
 	mSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
@@ -50,6 +50,7 @@ void ACOAAvatar::MoveForward(float value)
 	FRotator YawRotation(0.0f, Rotation.Yaw, 0.0f);
 	FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	AddMovementInput(ForwardDirection, value);
+	
 }
 
 void ACOAAvatar::MoveRight(float value)
@@ -58,12 +59,13 @@ void ACOAAvatar::MoveRight(float value)
 	FRotator YawRotation(0.0f, Rotation.Yaw, 0.0f);
 	FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 	AddMovementInput(RightDirection, value);
+	
 }
 
 void ACOAAvatar::RunPressed()
 {
 	
-	if (!bStaminaDrained && GetCharacterMovement()->IsMovingOnGround())
+	if (!bStaminaDrained)
 	{
 		bRunning = true;
 	}
@@ -101,7 +103,7 @@ void ACOAAvatar::Tick(float DeltaTime)
 
 	float currentSpeed = WalkSpeed;
 
-	if (!bRunning)
+	if (!bRunning || GetCharacterMovement()->GetLastUpdateVelocity().IsNearlyZero())
 	{
 
 		if (GetCharacterMovement()->MovementMode == EMovementMode::MOVE_Walking)
