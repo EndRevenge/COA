@@ -31,6 +31,8 @@ public:
 	UPROPERTY(EditAnywhere, Category = "COA")
 		float WalkSpeed;
 
+	 
+
 
 protected:
 	// Called when the game starts or when spawned
@@ -42,5 +44,13 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser);
+
+	UFUNCTION(BlueprintImplementableEvent)
+		float ModifyDamage(float damage);  
+
+	
+
 
 };

@@ -36,6 +36,8 @@ void ACOA_BaseCharacter::Tick(float DeltaTime)
 		Health = FMath::Min(MaxHealth, Health + HealingRate * DeltaTime);
 	}
 
+	GEngine->AddOnScreenDebugMessage(2, 1.f, FColor::Orange, FString::Printf(TEXT("Health: %f"), Health));
+
 }
 
 // Called to bind functionality to input
@@ -44,5 +46,26 @@ void ACOA_BaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 
+}
+
+float ACOA_BaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	if (bDead) return 0.0f;
+
+	//Blueprint Event call
+	DamageAmount = ModifyDamage(DamageAmount);
+
+	Health -= DamageAmount;
+	if (Health <= 0.f)
+	{
+		bDead = true;
+		APlayerController* PlayerController = Cast<APlayerController>(GetController());
+		if (PlayerController != nullptr)
+		{
+			DisableInput(PlayerController);
+		}
+			
+	}
+	return 0.0f;
 }
 
