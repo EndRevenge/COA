@@ -63,7 +63,9 @@ float ACOA_BaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dam
 		if (PlayerController != nullptr)
 		{
 			DisableInput(PlayerController);
+			CharacterDied();
 		}
+		
 			
 	}
 	return 0.0f;

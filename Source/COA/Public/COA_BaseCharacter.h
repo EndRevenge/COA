@@ -50,7 +50,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 		float ModifyDamage(float damage);  
 
-	
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void CharacterDied();
 
 
 };
