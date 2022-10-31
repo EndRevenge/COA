@@ -42,11 +42,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category = "COA")
 		float StaminaGainRate;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "COA")
+	/* UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "COA")
 		bool bStaminaDrained;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "COA")
-		bool bRunning;
+		bool bRunning; */
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -59,6 +59,10 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+
+	bool bRunning;
+	bool bStaminaDrained;
+
 	void MoveForward(float value);
 	void MoveRight(float value);
 	void RunPressed();

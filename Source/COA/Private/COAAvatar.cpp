@@ -5,10 +5,12 @@
 
 ACOAAvatar::ACOAAvatar() :
 MaxStamina(100.0f),
-Stamina(MaxStamina),
-RunSpeed(0),
+Stamina(50.0f),
+RunSpeed(900.0f),
 StaminaGainRate(16.0f),
-StaminaDrainRate(8.0f)
+StaminaDrainRate(8.0f),
+bRunning(false),
+bStaminaDrained(false)
 
 {
 	mSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
@@ -22,7 +24,62 @@ StaminaDrainRate(8.0f)
 	mSpringArm->bUsePawnControlRotation = true;
 	bUseControllerRotationYaw = false;
 
+	GetCharacterMovement()->JumpZVelocity = 600.0f;
+
 }
+
+// Called when the game starts or when spawned
+void ACOAAvatar::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+void ACOAAvatar::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+
+	float currentSpeed = WalkSpeed;
+
+	if (GetCharacterMovement()->MovementMode==EMovementMode::MOVE_Walking)
+	{
+
+		if (bRunning && !bStaminaDrained)
+		{
+			//Walking or Waiting
+			Stamina = FMath::Max(0.0f, Stamina - StaminaDrainRate * DeltaTime);
+
+			if (Stamina == 0.0f)
+			{
+				bStaminaDrained = true;
+				UpdateMovementParams();
+			}
+		}
+		else
+		{
+			Stamina = FMath::Min(MaxStamina, Stamina + StaminaGainRate * DeltaTime);
+			if (Stamina >= MaxStamina)
+			{
+				bStaminaDrained = false;
+				UpdateMovementParams();
+			}
+		}
+
+	}
+
+	//Set Player Speed
+	//GetCharacterMovement()->MaxWalkSpeed = currentSpeed;
+		GEngine->AddOnScreenDebugMessage(0, DeltaTime * 2.0f, FColor::Yellow, FString::Printf(TEXT("Tired?: %d Stamina: %f"), bStaminaDrained, Stamina));
+
+		//GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Yellow, FString::Printf(TEXT("Tired?: %d Stamina: %f"), 0, Stamina));
+		//Stamina = FMath::Min(MaxStamina, Stamina - StaminaDrainRate * DeltaTime);
+
+	//Stamina = FMath::Min(MaxStamina, Stamina + StaminaGainRate * DeltaTime);
+	//Stamina= FMath::Min(MaxStamina, Stamina - StaminaDrainRate * DeltaTime);
+
+
+}
+
 
 //Called to bind functionality input
 void ACOAAvatar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -62,95 +119,27 @@ void ACOAAvatar::MoveRight(float value)
 	
 }
 
-void ACOAAvatar::RunPressed()
+void ACOAAvatar::UpdateMovementParams()
 {
+	GetCharacterMovement()->MaxWalkSpeed = bRunning && !bStaminaDrained ? RunSpeed : WalkSpeed;
 	
-	if (!bStaminaDrained)
-	{
-		bRunning = true;
-	}
-	//GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
-	
-
 }
 
+void ACOAAvatar::RunPressed()
+{
+		bRunning = true;
+		UpdateMovementParams();
+	//GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+}
 
 void ACOAAvatar::RunReleased()
 {
 	//GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 	bRunning = false;
+	UpdateMovementParams();
 }
 
 
-// Called when the game starts or when spawned
-void ACOAAvatar::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
-/*void ACOAAvatar::UpdateMovementParams()
-{
-	if (bRunning)
-	{
-
-	}
-}*/
-
-void ACOAAvatar::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-
-	float currentSpeed = WalkSpeed;
-
-	if (!bRunning || GetCharacterMovement()->GetLastUpdateVelocity().IsNearlyZero())
-	{
-
-		if (GetCharacterMovement()->MovementMode == EMovementMode::MOVE_Walking)
-		{
-			//Walking or Waiting
-			Stamina += DeltaTime * StaminaGainRate;
-
-			if (bStaminaDrained && Stamina >= MaxStamina)
-				bStaminaDrained = false;
-		}
-		
-	}
-	else
-	{
-		//Running
-		if (!bStaminaDrained && GetCharacterMovement()->MovementMode == EMovementMode::MOVE_Walking && !GetCharacterMovement()->GetLastUpdateVelocity().IsNearlyZero())
-		{
-			Stamina -= DeltaTime * StaminaDrainRate;
-			currentSpeed = RunSpeed;
-
-			if (Stamina <= 0.0f)
-				bStaminaDrained = true;
-		}
-	}
-
-	Stamina = FMath::Clamp(Stamina, 0.0f, MaxStamina);
-
-	//Set Player Speed
-	GetCharacterMovement()->MaxWalkSpeed = currentSpeed;
-
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Yellow, FString::Printf(TEXT("Tired?: %d Stamina: %f"), bStaminaDrained, Stamina));
-	}
-
-	if (GetCharacterMovement()->MovementMode == EMovementMode::MOVE_Walking)
-	{
-		
-		//GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Yellow, FString::Printf(TEXT("Tired?: %d Stamina: %f"), 0, Stamina));
-		//Stamina = FMath::Min(MaxStamina, Stamina - StaminaDrainRate * DeltaTime);
-	} 
-
-	//Stamina = FMath::Min(MaxStamina, Stamina + StaminaGainRate * DeltaTime);
-	//Stamina= FMath::Min(MaxStamina, Stamina - StaminaDrainRate * DeltaTime);
-
-
-}
 
 
 
