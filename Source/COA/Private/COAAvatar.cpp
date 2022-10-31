@@ -10,7 +10,8 @@ RunSpeed(900.0f),
 StaminaGainRate(16.0f),
 StaminaDrainRate(8.0f),
 bRunning(false),
-bStaminaDrained(false)
+bStaminaDrained(false),
+MovementScale(1.0f)
 
 {
 	mSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
@@ -106,7 +107,7 @@ void ACOAAvatar::MoveForward(float value)
 	FRotator Rotation = GetController()->GetControlRotation();
 	FRotator YawRotation(0.0f, Rotation.Yaw, 0.0f);
 	FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	AddMovementInput(ForwardDirection, value);
+	AddMovementInput(ForwardDirection, value * MovementScale);
 	
 }
 
@@ -115,7 +116,7 @@ void ACOAAvatar::MoveRight(float value)
 	FRotator Rotation = GetController()->GetControlRotation();
 	FRotator YawRotation(0.0f, Rotation.Yaw, 0.0f);
 	FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-	AddMovementInput(RightDirection, value);
+	AddMovementInput(RightDirection, value * MovementScale);
 	
 }
 

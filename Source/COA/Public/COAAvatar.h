@@ -42,6 +42,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category = "COA")
 		float StaminaGainRate;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "COA")
+	float MovementScale;
+
 	/* UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "COA")
 		bool bStaminaDrained;
 
@@ -62,6 +65,7 @@ private:
 
 	bool bRunning;
 	bool bStaminaDrained;
+	
 
 	void MoveForward(float value);
 	void MoveRight(float value);
