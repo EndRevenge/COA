@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "COACharAnimInstance.h"
 #include "COA_BaseCharacter.generated.h"
 
 UCLASS()
@@ -31,7 +32,8 @@ public:
 	UPROPERTY(EditAnywhere, Category = "COA")
 		float WalkSpeed;
 
-	 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "COA")
+		ECharAnimState AnimState;
 
 
 protected:
@@ -53,6 +55,9 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 		void CharacterDied();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "COA")
+		void ChangeAnimState(ECharAnimState NewState);
 
 
 };

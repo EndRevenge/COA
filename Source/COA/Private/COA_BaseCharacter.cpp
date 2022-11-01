@@ -71,3 +71,8 @@ float ACOA_BaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dam
 	return 0.0f;
 }
 
+void ACOA_BaseCharacter::ChangeAnimState_Implementation(ECharAnimState NewState)
+{
+	AnimState = NewState;
+}
+
