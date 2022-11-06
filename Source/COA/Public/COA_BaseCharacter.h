@@ -32,8 +32,14 @@ public:
 	UPROPERTY(EditAnywhere, Category = "COA")
 		float WalkSpeed;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "COA")
+		float AttackStartupTime;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "COA")
 		ECharAnimState AnimState;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "COA")
+		void ChangeAnimState(ECharAnimState NewState);
 
 
 protected:
@@ -49,15 +55,19 @@ public:
 
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser);
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintImplementableEvent, Category = "COA")
 		float ModifyDamage(float damage);  
 
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintImplementableEvent, Category = "COA")
 		void CharacterDied();
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "COA")
-		void ChangeAnimState(ECharAnimState NewState);
+	UFUNCTION(BlueprintImplementableEvent, Category = "COA")
+		void onAttack();
 
+private:
+
+
+	FTimerHandle AttackTimer;
 
 };

@@ -9,7 +9,8 @@ ACOA_BaseCharacter::ACOA_BaseCharacter() :
 	Health(100.0f),
 	MaxHealth(100.0f),
 	HealingRate(5.0f),
-	WalkSpeed(300.0f)
+	WalkSpeed(300.0f),
+	AttackStartupTime(0.5f)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -63,10 +64,10 @@ float ACOA_BaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dam
 		if (PlayerController != nullptr)
 		{
 			DisableInput(PlayerController);
+			//CharacterDied();
+		}		
 			CharacterDied();
-		}
-		
-			
+						
 	}
 	return 0.0f;
 }
@@ -74,5 +75,16 @@ float ACOA_BaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dam
 void ACOA_BaseCharacter::ChangeAnimState_Implementation(ECharAnimState NewState)
 {
 	AnimState = NewState;
+	if (NewState == ECharAnimState::CAS_ATTACK)
+	{
+		//Start Timer
+		GWorld->GetTimerManager().SetTimer(AttackTimer, this, &ACOA_BaseCharacter::onAttack, AttackStartupTime, false);
+
+	}
+	else
+	{
+		//Clear Timer
+		GWorld->GetTimerManager().ClearTimer(AttackTimer);
+	}
 }
 
