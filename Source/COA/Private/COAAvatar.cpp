@@ -141,17 +141,19 @@ void ACOAAvatar::RunPressed()
 {
 
 	ChangeRunPressedStateServer(true);
-		//bRunning = true;
-		//UpdateMovementParams();
-	//GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+	
+	/*	bRunning = true;
+		UpdateMovementParams();
+	GetCharacterMovement()->MaxWalkSpeed = RunSpeed; */
 }
 
 void ACOAAvatar::RunReleased()
 {
 	ChangeRunPressedStateServer(false);
-	//GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
-	//bRunning = false;
-	//UpdateMovementParams();
+	
+	/*GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+	bRunning = false;
+	UpdateMovementParams(); */ 
 }
 
 

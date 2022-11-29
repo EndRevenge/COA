@@ -77,9 +77,11 @@ void ACOA_BaseCharacter::ChangeAnimState_Implementation(ECharAnimState NewState)
 	AnimState = NewState;
 	if (NewState == ECharAnimState::CAS_ATTACK)
 	{
+		if (HasAuthority())
+		{
+			GWorld->GetTimerManager().SetTimer(AttackTimer, this, &ACOA_BaseCharacter::onAttack, AttackStartupTime, false);
+		}
 		//Start Timer
-		GWorld->GetTimerManager().SetTimer(AttackTimer, this, &ACOA_BaseCharacter::onAttack, AttackStartupTime, false);
-
 	}
 	else
 	{
