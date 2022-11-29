@@ -41,6 +41,14 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "COA")
 		void ChangeAnimState(ECharAnimState NewState);
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "COA")
+		void OnAttack();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "COA")
+		float ModifyDamage(float damage);  
+	
+	UFUNCTION(BlueprintImplementableEvent, Category = "COA")
+		void CharacterDied();
 
 protected:
 	// Called when the game starts or when spawned
@@ -52,22 +60,9 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser);
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "COA")
-		float ModifyDamage(float damage);  
-
-
-	UFUNCTION(BlueprintImplementableEvent, Category = "COA")
-		void CharacterDied();
-
-	UFUNCTION(BlueprintImplementableEvent, Category = "COA")
-		void onAttack();
-
 private:
-
-
+	
 	FTimerHandle AttackTimer;
-
 };

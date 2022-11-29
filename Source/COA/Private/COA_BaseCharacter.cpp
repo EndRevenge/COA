@@ -10,21 +10,40 @@ ACOA_BaseCharacter::ACOA_BaseCharacter() :
 	MaxHealth(100.0f),
 	HealingRate(5.0f),
 	WalkSpeed(300.0f),
-	AttackStartupTime(0.5f)
+	AttackStartupTime(0.45f)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
-	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+	//C1 GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 
+}
+
+void ACOA_BaseCharacter::ChangeAnimState_Implementation(ECharAnimState NewState)
+{
+	AnimState = NewState;
+	if (NewState == ECharAnimState::CAS_ATTACK)
+	{
+		if (HasAuthority())
+		{
+			//Start Timer
+			GWorld->GetTimerManager().SetTimer(AttackTimer, this, &ACOA_BaseCharacter::OnAttack, AttackStartupTime, false);
+		}else
+		{
+			//Clear Timer
+			GWorld->GetTimerManager().ClearTimer(AttackTimer);
+		}		
+	}
 }
 
 // Called when the game starts or when spawned
 void ACOA_BaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+	AnimState = ECharAnimState::CAS_IDLE;
+	//Yukarıdakini ekledim çözüldü başlangıç vuruş!!!
 }
 
 // Called every frame
@@ -45,8 +64,6 @@ void ACOA_BaseCharacter::Tick(float DeltaTime)
 void ACOA_BaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-
 }
 
 float ACOA_BaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -72,21 +89,5 @@ float ACOA_BaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dam
 	return 0.0f;
 }
 
-void ACOA_BaseCharacter::ChangeAnimState_Implementation(ECharAnimState NewState)
-{
-	AnimState = NewState;
-	if (NewState == ECharAnimState::CAS_ATTACK)
-	{
-		if (HasAuthority())
-		{
-			GWorld->GetTimerManager().SetTimer(AttackTimer, this, &ACOA_BaseCharacter::onAttack, AttackStartupTime, false);
-		}
-		//Start Timer
-	}
-	else
-	{
-		//Clear Timer
-		GWorld->GetTimerManager().ClearTimer(AttackTimer);
-	}
-}
+
 

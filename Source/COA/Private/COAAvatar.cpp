@@ -5,7 +5,7 @@
 
 ACOAAvatar::ACOAAvatar() :
 MaxStamina(100.0f),
-Stamina(50.0f),
+Stamina(100.0f),
 RunSpeed(900.0f),
 StaminaGainRate(16.0f),
 StaminaDrainRate(8.0f),
@@ -29,6 +29,24 @@ MovementScale(1.0f)
 
 }
 
+void ACOAAvatar::MoveForward(float value)
+{
+	FRotator Rotation = GetController()->GetControlRotation();
+	FRotator YawRotation(0.0f, Rotation.Yaw, 0.0f);
+	FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+	AddMovementInput(ForwardDirection, value * MovementScale);
+	
+}
+
+void ACOAAvatar::MoveRight(float value)
+{
+	FRotator Rotation = GetController()->GetControlRotation();
+	FRotator YawRotation(0.0f, Rotation.Yaw, 0.0f);
+	FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+	AddMovementInput(RightDirection, value * MovementScale);
+	
+}
+
 // Called when the game starts or when spawned
 void ACOAAvatar::BeginPlay()
 {
@@ -38,26 +56,22 @@ void ACOAAvatar::BeginPlay()
 void ACOAAvatar::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-
+	
 	float currentSpeed = WalkSpeed;
 
 	if (GetCharacterMovement()->MovementMode==EMovementMode::MOVE_Walking)
 	{
-
 		if (bRunning && !bStaminaDrained)
 		{
 			//Walking or Waiting
 			Stamina = FMath::Max(0.0f, Stamina - StaminaDrainRate * DeltaTime);
-
 			if (Stamina == 0.0f)
 			{
 				bStaminaDrained = true;
 				UpdateMovementParams();
 			}
 		}
-		else
-		{
+		else {
 			Stamina = FMath::Min(MaxStamina, Stamina + StaminaGainRate * DeltaTime);
 			if (Stamina >= MaxStamina)
 			{
@@ -77,10 +91,13 @@ void ACOAAvatar::Tick(float DeltaTime)
 
 	//Stamina = FMath::Min(MaxStamina, Stamina + StaminaGainRate * DeltaTime);
 	//Stamina= FMath::Min(MaxStamina, Stamina - StaminaDrainRate * DeltaTime);
-
-
 }
 
+void ACOAAvatar::UpdateMovementParams()
+{
+	GetCharacterMovement()->MaxWalkSpeed = bRunning && !bStaminaDrained ? RunSpeed : WalkSpeed;
+	
+}
 
 //Called to bind functionality input
 void ACOAAvatar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -98,32 +115,6 @@ void ACOAAvatar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 	PlayerInputComponent->BindAction("Run", IE_Pressed, this, &ACOAAvatar::RunPressed);
 	PlayerInputComponent->BindAction("Run", IE_Released, this, &ACOAAvatar::RunReleased);
-
-
-}
-
-void ACOAAvatar::MoveForward(float value)
-{
-	FRotator Rotation = GetController()->GetControlRotation();
-	FRotator YawRotation(0.0f, Rotation.Yaw, 0.0f);
-	FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	AddMovementInput(ForwardDirection, value * MovementScale);
-	
-}
-
-void ACOAAvatar::MoveRight(float value)
-{
-	FRotator Rotation = GetController()->GetControlRotation();
-	FRotator YawRotation(0.0f, Rotation.Yaw, 0.0f);
-	FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-	AddMovementInput(RightDirection, value * MovementScale);
-	
-}
-
-void ACOAAvatar::UpdateMovementParams()
-{
-	GetCharacterMovement()->MaxWalkSpeed = bRunning && !bStaminaDrained ? RunSpeed : WalkSpeed;
-	
 }
 
 void ACOAAvatar::ChangeRunPressedStateServer_Implementation(bool pressed)

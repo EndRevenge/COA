@@ -11,11 +11,11 @@ UENUM(BlueprintType)
 enum class ECharAnimState : uint8
 {
 	CAS_UNKNOWN UMETA(DisplayName = "Unkown"),
-	CAS_IDLE UMETA(DisplayName = "Idle"),
-	CAS_RUN UMETA(DisplayName = "Run"),
-	CAS_ATTACK UMETA(DisplayName = "Attack"),
-	CAS_DAMAGE UMETA(DisplayName = "Damage"),
-	CAS_DEATH UMETA(DisplayName = "Death"),
+	CAS_IDLE	UMETA(DisplayName = "Idle"),
+	CAS_RUN		UMETA(DisplayName = "Run"),
+	CAS_ATTACK	UMETA(DisplayName = "Attack"),
+	CAS_DAMAGE	UMETA(DisplayName = "Damage"),
+	CAS_DEATH	UMETA(DisplayName = "Death"),
 	
 };
 
@@ -32,6 +32,4 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "COA")
 		void ChangeAnimState(ECharAnimState NewState);
-
-	
 };
