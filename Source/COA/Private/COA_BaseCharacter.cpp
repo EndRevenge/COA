@@ -37,7 +37,7 @@ void ACOA_BaseCharacter::Tick(float DeltaTime)
 		Health = FMath::Min(MaxHealth, Health + HealingRate * DeltaTime);
 	}
 
-	GEngine->AddOnScreenDebugMessage(2, 1.f, FColor::Orange, FString::Printf(TEXT("Health: %f"), Health));
+	//HealthYazdırma GEngine->AddOnScreenDebugMessage(2, 1.f, FColor::Orange, FString::Printf(TEXT("Health: %f"), Health));
 
 }
 

@@ -126,18 +126,32 @@ void ACOAAvatar::UpdateMovementParams()
 	
 }
 
+void ACOAAvatar::ChangeRunPressedStateServer_Implementation(bool pressed)
+{
+	ChangeRunPressedStateMulti(pressed);
+}
+
+void ACOAAvatar::ChangeRunPressedStateMulti_Implementation(bool pressed)
+{
+	bRunning= pressed;
+	UpdateMovementParams();
+}
+
 void ACOAAvatar::RunPressed()
 {
-		bRunning = true;
-		UpdateMovementParams();
+
+	ChangeRunPressedStateServer(true);
+		//bRunning = true;
+		//UpdateMovementParams();
 	//GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
 }
 
 void ACOAAvatar::RunReleased()
 {
+	ChangeRunPressedStateServer(false);
 	//GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
-	bRunning = false;
-	UpdateMovementParams();
+	//bRunning = false;
+	//UpdateMovementParams();
 }
 
 

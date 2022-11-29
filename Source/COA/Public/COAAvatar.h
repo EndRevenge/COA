@@ -72,5 +72,11 @@ private:
 	void RunPressed();
 	void RunReleased();
 	void UpdateMovementParams();
+
+	UFUNCTION(NetMulticast,Reliable)
+	void ChangeRunPressedStateMulti(bool pressed);
+
+	UFUNCTION(Server,Reliable)
+	void ChangeRunPressedStateServer(bool pressed);
 	
 };
