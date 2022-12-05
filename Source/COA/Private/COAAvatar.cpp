@@ -2,6 +2,7 @@
 
 
 #include "COAAvatar.h"
+#include "Net/UnrealNetwork.h"
 
 ACOAAvatar::ACOAAvatar() :
 MaxStamina(100.0f),
@@ -26,7 +27,7 @@ MovementScale(1.0f)
 	bUseControllerRotationYaw = false;
 
 	GetCharacterMovement()->JumpZVelocity = 600.0f;
-
+	bReplicates=true;
 }
 
 void ACOAAvatar::MoveForward(float value)
@@ -97,6 +98,13 @@ void ACOAAvatar::UpdateMovementParams()
 {
 	GetCharacterMovement()->MaxWalkSpeed = bRunning && !bStaminaDrained ? RunSpeed : WalkSpeed;
 	
+}
+
+void ACOAAvatar::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ACOAAvatar, Stamina);
 }
 
 //Called to bind functionality input

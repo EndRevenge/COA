@@ -30,7 +30,7 @@ public:
 
 
 	//STAMINA INTEGRATION
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "COA")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Replicated, Category = "COA")
 		float Stamina;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "COA")
@@ -50,6 +50,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "COA")
 		bool bRunning; */
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
