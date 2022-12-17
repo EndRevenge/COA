@@ -30,7 +30,7 @@ public:
 
 
 	//STAMINA INTEGRATION
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Replicated, Category = "COA")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "COA")
 		float Stamina;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "COA")
@@ -42,8 +42,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category = "COA")
 		float StaminaGainRate;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly,Category = "COA")
+		bool bStaminaDrained;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "COA")
-	float MovementScale;
+		float MovementScale;
 
 	/* UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "COA")
 		bool bStaminaDrained;
@@ -66,7 +69,6 @@ protected:
 private:
 
 	bool bRunning;
-	bool bStaminaDrained;
 	
 
 	void MoveForward(float value);
