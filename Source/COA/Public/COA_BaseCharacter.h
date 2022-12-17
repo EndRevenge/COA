@@ -20,7 +20,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "COA")
 		bool bDead;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "COA")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Replicated, Category = "COA")
 		float Health;
 
 	UPROPERTY(EditAnywhere, Category = "COA")

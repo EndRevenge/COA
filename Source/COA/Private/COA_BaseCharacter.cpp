@@ -2,6 +2,7 @@
 
 
 #include "COA_BaseCharacter.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values
 ACOA_BaseCharacter::ACOA_BaseCharacter() :
@@ -35,6 +36,13 @@ void ACOA_BaseCharacter::ChangeAnimState_Implementation(ECharAnimState NewState)
 			GWorld->GetTimerManager().ClearTimer(AttackTimer);
 		}		
 	}
+}
+
+void ACOA_BaseCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ACOA_BaseCharacter, Health);
 }
 
 // Called when the game starts or when spawned
