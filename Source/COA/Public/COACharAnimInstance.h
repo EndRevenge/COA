@@ -17,6 +17,7 @@ enum class ECharAnimState : uint8
 	CAS_DAMAGE	UMETA(DisplayName = "Damage"),
 	CAS_DEATH	UMETA(DisplayName = "Death"),
 	CAS_CAST	UMETA(DisplayName = "Cast"),
+	CAS_SPECIAL	UMETA(DisplayName = "SpecialAttack"),
 	
 };
 
