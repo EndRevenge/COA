@@ -15,7 +15,7 @@ void UCOAGameInstance::Host()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Green, TEXT("Hosting"));
 
-	GWorld->ServerTravel("/Game/Blueprints/Maps/Lobby?listen");
+	GWorld->ServerTravel("/Game/Final/Levels/Level1?listen");
 }
 
 void UCOAGameInstance::Join(FString& Address)
